@@ -1,4 +1,5 @@
 # utilities
+streamlit
 numpy
 pandas
 scikit-learn

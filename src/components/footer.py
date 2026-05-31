@@ -19,7 +19,7 @@ def footer_dashboard():
     st.markdown(f"""
         <div style = 'display:flex; flex-direction:column;align-items:center; justify-content:center;margin-bottom:30px;'> 
                 <p style="font-weight:bold; color:black;">  Created With ❤️ by 
-                <span style='color:#FFD166;'>Rahul</span>
+                <span style='color:#F59E0B;'>Rahul</span>
                 <span style='color:black;'>Sahu</span></p>
 
     </div>

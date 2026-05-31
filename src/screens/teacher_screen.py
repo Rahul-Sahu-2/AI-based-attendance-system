@@ -29,55 +29,89 @@ def teacher_screen():
         teacher_screen_register()
 
 
-
 def teacher_dashboard():
     teacher_data = st.session_state.teacher_data
-    c1, c2 = st.columns([1, 2], vertical_alignment="center", gap='xxlarge')
 
-    with c1:
-        header_dashboard()
-        
+    # ── Top bar ──────────────────────────────────────────
+    header_dashboard()
 
-    with c2:
-        st.subheader(f"""Welcome, {teacher_data['name']} """)
-        if st.button("Logout", type='secondary', key='loginbackbtn'):
+    st.markdown("<div style='height:0.5rem'></div>", unsafe_allow_html=True)
+
+    # ── Welcome card ─────────────────────────────────────
+    st.markdown(f"""
+        <div style="
+            background: #FFFFFF;
+            border: 1px solid #E0E7FF;
+            border-radius: 1.25rem;
+            padding: 1.25rem 1.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 16px rgba(79,70,229,0.07);
+            margin-bottom: 0.5rem;
+        ">
+            <div>
+                <div style="
+                    font-family: 'Plus Jakarta Sans', sans-serif;
+                    font-size: 0.72rem;
+                    font-weight: 700;
+                    letter-spacing: 0.1em;
+                    text-transform: uppercase;
+                    color: #6366F1;
+                    margin-bottom: 4px;
+                ">Teacher Dashboard</div>
+                <div style="
+                    font-family: 'Plus Jakarta Sans', sans-serif;
+                    font-size: 1.5rem;
+                    font-weight: 800;
+                    color: #1E1B4B;
+                    letter-spacing: -0.02em;
+                ">Welcome back, {teacher_data['name']} 👋</div>
+            </div>
+        </div>
+    """, unsafe_allow_html=True)
+
+    # Logout button right side
+    _, right = st.columns([4, 1])
+    with right:
+        if st.button("Logout", type='secondary', key='loginbackbtn', use_container_width=True):
             st.session_state['is_logged_in'] = False
             del st.session_state.teacher_data
             st.rerun()
 
-    st.write("")
+    st.markdown("<div style='height:1rem'></div>", unsafe_allow_html=True)
 
+    # ── Tab buttons ───────────────────────────────────────
     if "current_teacher_tab" not in st.session_state:
         st.session_state.current_teacher_tab = 'take_attendance'
 
-    tab1 , tab2 , tab3 = st.columns(3)
+    tab1, tab2, tab3 = st.columns(3)
 
     with tab1:
         type1 = "primary" if st.session_state.current_teacher_tab == 'take_attendance' else "tertiary"
-        if st.button('Take Attendance',type = type1 ,width= "stretch", icon="🎯"):
+        if st.button('Take Attendance', type=type1, width="stretch", icon="🎯"):
             st.session_state.current_teacher_tab = 'take_attendance'
             st.rerun()
 
     with tab2:
         type2 = "primary" if st.session_state.current_teacher_tab == 'manage_subjects' else "tertiary"
-        if st.button('Manage Subjects',type = type2 ,width= "stretch", icon=":material/book_ribbon:"):
+        if st.button('Manage Subjects', type=type2, width="stretch", icon=":material/book_ribbon:"):
             st.session_state.current_teacher_tab = 'manage_subjects'
             st.rerun()
 
     with tab3:
         type3 = "primary" if st.session_state.current_teacher_tab == 'attendance_records' else "tertiary"
-        if st.button('Attendance Records',type = type3 ,width= "stretch", icon=":material/layers:"):
+        if st.button('Attendance Records', type=type3, width="stretch", icon=":material/layers:"):
             st.session_state.current_teacher_tab = 'attendance_records'
             st.rerun()
 
-
     st.divider()
 
-    if st.session_state.current_teacher_tab== "take_attendance":
+    if st.session_state.current_teacher_tab == "take_attendance":
         teacher_tab_take_attendance()
-    if st.session_state.current_teacher_tab== "manage_subjects":
+    if st.session_state.current_teacher_tab == "manage_subjects":
         teacher_tab_manage_subjects()
-    if st.session_state.current_teacher_tab== "attendance_records":
+    if st.session_state.current_teacher_tab == "attendance_records":
         teacher_tab_attendance_records()
 
     footer_dashboard()
@@ -269,43 +303,63 @@ def login_teacher(username, password):
 
 
 def teacher_screen_login():
-    c1, c2 = st.columns([1, 2], vertical_alignment="center", gap='xxlarge')
+    header_dashboard()
+    
+    st.markdown("<div style='max-width:480px; margin:0 auto;'>", unsafe_allow_html=True)
+    
+    if st.button("← Go back to Home", type='secondary', key='loginbackbtn'):
+        st.session_state['login_type'] = None
+        st.rerun()
 
-    with c1:
-        header_dashboard()
-        
+    st.markdown("<div style='height:1.5rem'></div>", unsafe_allow_html=True)
+    st.header("Login using password")
+    st.write("")
 
-    with c2:
-        if st.button("Go back to Home", type='secondary', key='loginbackbtn'):
-            st.session_state['login_type'] = None
+    teacher_username = st.text_input(
+        "Username", 
+        placeholder="Satendra",
+    )
+    teacher_pass = st.text_input(
+        "Password", 
+        type='password', 
+        placeholder="Enter password",
+    )
+
+    st.markdown("""
+        <style>
+            div[data-testid="stTextInput"] input {
+                padding: 14px 18px !important;
+                font-size: 1rem !important;
+                border-radius: 0.75rem !important;
+                border: 1.5px solid #C7D2FE !important;
+                background: #FFFFFF !important;
+            }
+            div[data-testid="stTextInput"] input:focus {
+                border-color: #4F46E5 !important;
+                box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+            }
+        </style>
+    """, unsafe_allow_html=True)
+
+    st.divider()
+
+    btnc1, btnc2 = st.columns(2)
+    with btnc1:
+        if st.button('Login', icon=':material/passkey:', shortcut='ctrl+enter', use_container_width=True):
+            if login_teacher(teacher_username, teacher_pass):
+                st.toast("Welcome back!", icon="👋")
+                import time
+                time.sleep(1)
+                st.rerun()
+            else:
+                st.error("Invalid username and password combo")
+
+    with btnc2:
+        if st.button('Register Instead', type='primary', icon=':material/passkey:', use_container_width=True):
+            st.session_state.teacher_login_type = "register"
             st.rerun()
 
-        st.header("Login using password")
-        st.write("")
-
-        teacher_username = st.text_input("Username", placeholder="Satendra")
-        teacher_pass = st.text_input("Password", type='password', placeholder="Enter password")
-
-        st.divider()
-
-        btnc1, btnc2 = st.columns(2)
-        with btnc1:
-            if st.button('Login', icon=':material/passkey:', shortcut='ctrl+enter', use_container_width=True):
-                if login_teacher(teacher_username,teacher_pass):
-                    st.toast("Welcome back!", icon="👋")
-                    import time 
-                    time.sleep(1)
-                    st.rerun()
-                else: 
-                    st.error("Invalid username and password combo")
-
-
-
-        with btnc2:
-            if st.button('Register Instead', type='primary', icon=':material/passkey:', use_container_width=True):
-                st.session_state.teacher_login_type = "register"
-                st.rerun()
-
+    st.markdown("</div>", unsafe_allow_html=True)
     footer_dashboard()
 
 
@@ -326,59 +380,58 @@ def register_teacher(teacher_username,teacher_name,teacher_pass,teacher_pass_con
         return False ,"Unexpected Error!"
 
 def teacher_screen_register():
-    c1,c2 = st.columns([1,2] , vertical_alignment="center", gap='xxlarge')
+    header_dashboard()
 
-    with c1:
-        header_dashboard()
+    st.markdown("<div style='max-width:480px; margin:0 auto;'>", unsafe_allow_html=True)
 
-    with c2:
-        if st.button("Go back to Home", type = 'secondary', key = 'registerbackbtn'):
-            st.session_state['login_type']= None 
-            st.rerun()
-    
-        st.header("Register your teacher profile")
-        st.write("")
+    if st.button("← Go back to Home", type='secondary', key='registerbackbtn'):
+        st.session_state['login_type'] = None
+        st.rerun()
 
-        teacher_username = st.text_input(
-            "Username",
-            placeholder="Enter user name"
-        )
-        teacher_name = st.text_input(
-            "Enter your name",
-            placeholder="Satendra Thakur"
-        )
+    st.markdown("<div style='height:1.5rem'></div>", unsafe_allow_html=True)
+    st.header("Register your teacher profile")
+    st.write("")
 
-        teacher_pass = st.text_input(
-            "Password",
-            type='password',
-            placeholder="Enter password"
-        )
-        teacher_pass_confirm = st.text_input(
-            "Confirm your Password",
-            type='password',
-            placeholder="Enter password"
-        )
+    st.markdown("""
+        <style>
+            div[data-testid="stTextInput"] input {
+                padding: 14px 18px !important;
+                font-size: 1rem !important;
+                border-radius: 0.75rem !important;
+                border: 1.5px solid #C7D2FE !important;
+                background: #FFFFFF !important;
+            }
+            div[data-testid="stTextInput"] input:focus {
+                border-color: #4F46E5 !important;
+                box-shadow: 0 0 0 3px rgba(79,70,229,0.12) !important;
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
-        st.divider()
+    teacher_username = st.text_input("Username", placeholder="Enter username")
+    teacher_name = st.text_input("Full Name", placeholder="Satendra Thakur")
+    teacher_pass = st.text_input("Password", type='password', placeholder="Enter password")
+    teacher_pass_confirm = st.text_input("Confirm Password", type='password', placeholder="Re-enter password")
 
-        btnc1, btnc2 = st.columns(2)
-        with btnc1:
-            if st.button('Register now', icon=':material/passkey:', shortcut='ctrl+enter', use_container_width=True):
-                success, message = register_teacher(teacher_username,teacher_name,teacher_pass,teacher_pass_confirm)
+    st.divider()
 
-                if success:
-                    st.success(message)
-                    import time 
-                    time.sleep(2)
-                    st.session_state.teacher_login_type = "login"
-                    st.rerun()
-
-                else :
-                    st.error(message)
-
-        with btnc2:
-            if st.button('login Instead', type='primary',icon=':material/passkey:', use_container_width=True):
+    btnc1, btnc2 = st.columns(2)
+    with btnc1:
+        if st.button('Register now', icon=':material/passkey:', shortcut='ctrl+enter', use_container_width=True):
+            success, message = register_teacher(teacher_username, teacher_name, teacher_pass, teacher_pass_confirm)
+            if success:
+                st.success(message)
+                import time
+                time.sleep(2)
                 st.session_state.teacher_login_type = "login"
                 st.rerun()
+            else:
+                st.error(message)
 
-        footer_dashboard()
+    with btnc2:
+        if st.button('Login Instead', type='primary', icon=':material/passkey:', use_container_width=True):
+            st.session_state.teacher_login_type = "login"
+            st.rerun()
+
+    st.markdown("</div>", unsafe_allow_html=True)
+    footer_dashboard()

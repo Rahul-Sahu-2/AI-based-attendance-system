@@ -1,3 +1,11 @@
+import os
+import sys
+
+
+project_root = os.path.dirname(os.path.abspath(__file__))
+if project_root not in sys.path:
+    sys.path.insert(0, project_root)
+
 import streamlit as st 
 from src.screens.home_screen import home_screen
 from src.screens.teacher_screen import teacher_screen

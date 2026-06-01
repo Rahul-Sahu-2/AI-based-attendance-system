@@ -16,7 +16,7 @@ from src.components.subject_card import subject_card
 def student_dashboard():
     student_data = st.session_state.student_data
     student_id = student_data['student_id']
-    c1, c2 = st.columns([1, 2], vertical_alignment="center", gap='xxlarge')
+    c1, c2 = st.columns([3, 3], vertical_alignment="center", gap='xxlarge')
 
     with c1:
         header_dashboard()

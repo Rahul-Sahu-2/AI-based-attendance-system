@@ -16,6 +16,6 @@ def header_dashboard():
         <div style='display:flex; flex-direction:row; align-items:center; 
                     justify-content:center; gap:12px; margin-bottom:10px;'> 
             <img src='{logo_url}' style='height:60px;'/>
-            <h2 style='color:#262638; margin:0; font-size:1.8rem;'>SNAP CLASS</h2>
+            <h2 style='color:#262638; margin:0; font-size:1.8rem;'>SNAP<br/>CLASS</h2>
         </div>
     """, unsafe_allow_html=True)

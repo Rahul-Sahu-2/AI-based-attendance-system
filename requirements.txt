@@ -3,9 +3,10 @@ numpy==1.26.4
 pandas==2.2.3
 scikit-learn==1.5.2
 
+# Pre-compiled Dlib for Linux (No compiling required!)
+https://github.com
+
 # face recognition
-cmake
-dlib
 face-recognition==1.3.0
 face-recognition-models==0.3.0
 setuptools==75.1.0

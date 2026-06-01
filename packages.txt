@@ -1,0 +1,6 @@
+libsndfile1
+ffmpeg
+portaudio19-dev
+python3-dev
+cmake
+build-essential

@@ -1,1 +1,6 @@
+cmake
+g++
+make
+build-essential
+libsndfile1
 ffmpeg
